@@ -1,13 +1,13 @@
 import { Box, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useTheme } from "../../hooks";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import LoadingOverlay from "../loading-overlay";
+import { BrowserRouter } from "react-router-dom";
 import classes from './styles.module.css';
 
-const App = lazy(() => import("../app"));
+interface FrameProps {
+	children: JSX.Element;
+}
 
-const Frame = () => {
+const Frame = ({ children }: FrameProps) => {
 	const { background, colorMode, theme } = useTheme();
 
 	return (
@@ -16,13 +16,7 @@ const Frame = () => {
 				<StyledEngineProvider injectFirst>
 					<Box sx={{ background }} className={classes.frame}>
 						<BrowserRouter>
-							<Routes>
-								<Route path={"*"} element={
-									<Suspense fallback={<LoadingOverlay/>}>
-										<App/>
-									</Suspense>
-								}/>
-							</Routes>
+							{children}
 						</BrowserRouter>
 					</Box>
 				</StyledEngineProvider>
